@@ -1,0 +1,5 @@
+{
+  "port": 5000,
+  "jwtSecret": "1e2uh1iohas7dy231kpodask",
+  "mongoURL": "mongodb+srv://adminintehart:L2kVd2iGc8NKauZ@cluster0.5je96.azure.mongodb.net/task-manager?retryWrites=true&w=majority"
+}
