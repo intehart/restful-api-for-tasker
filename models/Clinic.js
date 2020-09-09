@@ -1,12 +1,11 @@
 'use strict';
 const { Model } = require('sequelize');
-const { DocumentType } = require('DocumentType');
 
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class Clinic extends Model {
     constructor(values, options) {
       super(values, options);
-      this.tableName = 'user';
+      this.tableName = 'clinic';
     }
     /**
      * Helper method for defining associations.
@@ -18,21 +17,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
 
-  User.init({
-    role: DataTypes.INTEGER,
-    username: DataTypes.STRING,
-    password: DataTypes.STRING,
-    email: DataTypes.STRING,
+  Clinic.init({
     name: DataTypes.STRING,
-    surname: DataTypes.STRING,
-    patronymic: DataTypes.STRING,
-    auth_token: DataTypes.STRING
+    phone: DataTypes.STRING,
+    email: DataTypes.STRING,
+    address: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'User',
+    modelName: 'Clinic',
   });
-
-  User.hasMany(DocumentType, { foreignKey: 'id' });
-
-  return User;
+  return Clinic;
 };
