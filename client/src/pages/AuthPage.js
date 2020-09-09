@@ -1,15 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {useHttp} from '../hooks/http.hook';
+import {AuthContext} from "../context/AuthContext";
 
 export const AuthPage = () => {
+    const auth = useContext(AuthContext);
     const {loading, request} = useHttp();
-    const [form, setForm, error] = useState({
+    const [form, setForm] = useState({
         email: '', password: ''
     });
-
-    useEffect(() => {
-
-    }, [error])
 
     const changeHandler = event => {
         setForm({
@@ -21,7 +19,13 @@ export const AuthPage = () => {
     const registerHandler = async () => {
         try {
             const data = await request('/api/auth/register', 'POST', {...form})
-            console.log('Data', data);
+            console.log(data);
+        } catch (e) {}
+    }
+    const loginHandler = async () => {
+        try {
+            const data = await request('/api/auth/login', 'POST', {...form});
+            auth.login(data.token, data.userId);
         } catch (e) {}
     }
 
@@ -54,6 +58,7 @@ export const AuthPage = () => {
             </div>
             <div>
                 <button
+                    onClick={loginHandler}
                     disabled={loading}
                 >
                     Войти

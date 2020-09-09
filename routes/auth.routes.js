@@ -74,12 +74,12 @@ router.post(
         const token = jwt.sign(
             { userId: user.id },
             config.get('jwtSecret'),
-            { exportsIn: '1h' }
+            { expiresIn: '1h' }
         )
 
         res.json({ token, userId: user.id })
     } catch (e) {
-        res.status(500).json({message: 'Что-то пошло не так'})
+        res.status(500).json({message: 'Что-то пошло не так'});
     }
 });
 
