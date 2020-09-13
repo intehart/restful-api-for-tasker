@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const PORT = 5020;
+global.__root = __dirname;
 
 //connect file uploader
 app.use(require('express-fileupload')())
