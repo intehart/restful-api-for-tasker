@@ -7,9 +7,25 @@
 <body>
 <form action="/api/user/upload-document" method="post" enctype="multipart/form-data">
     <label>
-        <p>File</p>
-        <input type="file" name="file" multiple>
+        Файл
+        <input type="file" name="file">
     </label>
+    <br>
+    <label>
+        ID пользователя
+        <input type="text" name="user_id">
+    </label>
+    <br>
+    <label>
+        ID клиники
+        <input type="text" name="clinic_id">
+    </label>
+    <br>
+    <label>
+        ID типа документа
+        <input type="text" name="document_type_id">
+    </label>
+    <br>
     <button type="submit">send</button>
 </form>
 </body>

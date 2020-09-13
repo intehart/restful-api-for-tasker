@@ -1,7 +1,14 @@
 const express = require('express');
+const { Sequelize } = require('sequelize');
 const app = express();
 const PORT = 5020;
+
 global.__root = __dirname;
+
+const environment = "development";
+const config = require(__root + '/config/config.json');
+
+global.db = new Sequelize(config[environment]);
 
 //connect file uploader
 app.use(require('express-fileupload')());
@@ -13,6 +20,7 @@ require('./routes/routesMapper')(app);
 
 async function start() {
     try {
+        db.authenticate();
         app.listen(PORT, () => console.log(`Server started ${PORT}`));
     } catch (e) {
         console.log('Server Error: ' + e.message);
