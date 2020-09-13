@@ -3,10 +3,6 @@ const { Model, DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   class Clinic extends Model {
-    constructor(values, options) {
-      super(values, options);
-      this.tableName = 'clinic';
-    }
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -18,6 +14,10 @@ module.exports = (sequelize) => {
   }
 
   Clinic.init({
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false
@@ -40,6 +40,7 @@ module.exports = (sequelize) => {
   }, {
     sequelize,
     modelName: 'Clinic',
+    tableName: 'clinic'
   });
   return Clinic;
 };

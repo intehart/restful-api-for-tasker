@@ -1,13 +1,9 @@
 'use strict';
 const { Model, DataTypes } = require('sequelize');
-// const { User } = require('./User')(db);
+// const User = require('./User')(db);
 
 module.exports = (sequelize) => {
   class UserDocument extends Model {
-    constructor(values, options) {
-      super(values, options);
-      this.tableName = 'user_document';
-    }
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -19,6 +15,10 @@ module.exports = (sequelize) => {
   }
 
   UserDocument.init({
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true
+    },
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false
@@ -38,6 +38,7 @@ module.exports = (sequelize) => {
   }, {
     sequelize,
     modelName: 'UserDocument',
+    tableName: 'user_document'
   });
 
   // UserDocument.hasOne(User, { foreignKey: 'user_id' });

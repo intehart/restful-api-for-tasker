@@ -3,10 +3,6 @@ const { Model, DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   class DocumentType extends Model {
-    constructor(values, options) {
-      super(values, options);
-      this.tableName = 'document_type';
-    }
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -18,6 +14,10 @@ module.exports = (sequelize) => {
   }
 
   DocumentType.init({
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false
@@ -25,6 +25,7 @@ module.exports = (sequelize) => {
   }, {
     sequelize,
     modelName: 'DocumentType',
+    tableName: 'document_type',
   });
 
   return DocumentType;
