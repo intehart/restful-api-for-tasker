@@ -1,5 +1,0 @@
-{
-  "port": "the port on which the server runs",
-  "jwtSecret": "the secret key",
-  "mongoURL": "path to the database, login, password and name"
-}

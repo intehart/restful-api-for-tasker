@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "username db",
+    "password": "password db",
+    "database": "database name",
+    "host": "IP-address",
+    "dialect": "name you're base"
+  },
+  "test": {
+    "username": "username db",
+    "password": "password db",
+    "database": "database name",
+    "host": "IP-address",
+    "dialect": "name you're base"
+  },
+  "production": {
+    "username": "username db",
+    "password": "password db",
+    "database": "database name",
+    "host": "IP-address",
+    "dialect": "name you're base"
+  }
+}
