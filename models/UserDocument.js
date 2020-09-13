@@ -1,10 +1,10 @@
 'use strict';
-const { Model } = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
 const { User } = require('./User');
 const { DocumentType } = require('./DocumentType');
 const { Clinic } = require('./Clinic');
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize) => {
   class UserDocument extends Model {
     constructor(values, options) {
       super(values, options);

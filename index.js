@@ -20,7 +20,6 @@ require('./routes/routesMapper')(app);
 
 async function start() {
     try {
-        db.authenticate();
         app.listen(PORT, () => console.log(`Server started ${PORT}`));
     } catch (e) {
         console.log('Server Error: ' + e.message);
