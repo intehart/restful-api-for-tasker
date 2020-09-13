@@ -16,17 +16,45 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+
   }
 
   User.init({
-    role: DataTypes.INTEGER,
-    username: DataTypes.STRING,
-    password: DataTypes.STRING,
-    email: DataTypes.STRING,
-    name: DataTypes.STRING,
-    surname: DataTypes.STRING,
-    patronymic: DataTypes.STRING,
-    auth_token: DataTypes.STRING
+    role: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isEmail: true
+      }
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    surname: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    patronymic: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    auth_token: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'User',

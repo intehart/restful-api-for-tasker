@@ -19,7 +19,10 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   DocumentType.init({
-    name: DataTypes.STRING
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'DocumentType',

@@ -22,10 +22,10 @@ router.post('/upload-document', async (req, res) => {
                 file.mv(__root + '/public/files/' + file.name)
             });
         }
-        res.status(200).json({ message: 'Все файлы успешно загружены' })
+        res.status(200).json({ message: 'Все файлы успешно загружены' });
     } catch (e) {
-        res.status(500).json({ message: 'Ошибка при загрузке файла' })
-        throw e
+        res.status(500).json({ message: 'Ошибка при загрузке файла' });
+        throw e;
     }
 })
 

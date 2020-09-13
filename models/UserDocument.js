@@ -18,21 +18,25 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-
-    uploadDocument() {
-
-    }
   }
 
   UserDocument.init({
     user_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-
+      allowNull: false
     },
-    document_type_id: DataTypes.INTEGER,
-    file: DataTypes.STRING,
-    clinic_id: DataTypes.INTEGER
+    document_type_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    file: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    clinic_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'UserDocument',
