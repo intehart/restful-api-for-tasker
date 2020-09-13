@@ -1,5 +1,6 @@
 'use strict';
 const { Model } = require('sequelize');
+const { User } = require('./User');
 
 module.exports = (sequelize, DataTypes) => {
   class DocumentType extends Model {
@@ -23,5 +24,6 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'DocumentType',
   });
+
   return DocumentType;
 };

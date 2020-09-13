@@ -1,6 +1,8 @@
 'use strict';
 const { Model } = require('sequelize');
-const { User } = require('User');
+const { User } = require('./User');
+const { DocumentType } = require('./DocumentType');
+const { Clinic } = require('./Clinic');
 
 module.exports = (sequelize, DataTypes) => {
   class UserDocument extends Model {
@@ -16,10 +18,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+
+    uploadDocument() {
+
+    }
   }
 
   UserDocument.init({
-    user_id: DataTypes.INTEGER,
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+
+    },
     document_type_id: DataTypes.INTEGER,
     file: DataTypes.STRING,
     clinic_id: DataTypes.INTEGER

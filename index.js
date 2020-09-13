@@ -1,19 +1,17 @@
 const express = require('express');
-const config = require('config');
-const mongoose = require('mongoose');
 const app = express();
-const PORT = config.get('port') || 5020;
+const PORT = 5020;
+
+//connect file uploader
+app.use(require('express-fileupload')())
 
 app.use(express.json({ extended: true }));
-app.use('/api/auth', require('./routes/auth.routes'));
+
+//connect routes handler map
+require('./routes/routesMapper')(app);
 
 async function start() {
     try {
-        await mongoose.connect(config.get('mongoURL'), {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useCreateIndex: true
-        })
         app.listen(PORT, () => console.log(`Server started ${PORT}`));
     } catch (e) {
         console.log('Server Error: ' + e.message);
