@@ -62,7 +62,7 @@ module.exports = (sequelize) => {
     tableName: 'user'
   });
 
-  User.hasMany(UserDocument, { foreignKey: 'id' });
+  User.hasMany(UserDocument, { foreignKey: 'user_id' });
 
   return User;
 };
