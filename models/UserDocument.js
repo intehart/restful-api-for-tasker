@@ -1,6 +1,5 @@
 'use strict';
 const { Model, DataTypes } = require('sequelize');
-const User = require('./User')(db);
 
 module.exports = (sequelize) => {
   class UserDocument extends Model {
@@ -40,8 +39,6 @@ module.exports = (sequelize) => {
     modelName: 'UserDocument',
     tableName: 'user_document'
   });
-
-  UserDocument.belongsTo(User);
 
   return UserDocument;
 };

@@ -1,6 +1,5 @@
 'use strict';
 const { Model, DataTypes } = require('sequelize');
-const UserDocument = require('./UserDocument')(db);
 
 module.exports = (sequelize) => {
   class User extends Model {
@@ -61,8 +60,6 @@ module.exports = (sequelize) => {
     modelName: 'User',
     tableName: 'user'
   });
-
-  User.hasMany(UserDocument, { foreignKey: 'user_id' });
 
   return User;
 };
