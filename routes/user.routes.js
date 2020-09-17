@@ -1,36 +1,60 @@
 const {Router} = require('express');
 const router = Router();
 const User = require('../models/User')(db);
+const UserDocument = require('../models/UserDocument')(db);
 
 router.get('/', async (req, res) => {
   res.sendFile( __root + '/public/image-load.html');
 })
 
-router.get('/get', async (req, res) => {
-  // console.log(User.);
-  User.findOne({where: {username: "root"}}).then(result => res.status(200).json({ message: `${result.username}` }));
+router.get('/get-document/:id', async (req, res) => {
+  return res.status(400).json('success');
 })
 
-router.post('/upload-document', async (req, res) => {
+router.post('/upload-document', async (request, responce) => {
   try {
-    if (req.files === undefined) {
-      return res.status(400).json({ message: 'Не передано ни одного файлы' });
+
+    if (request.files === undefined) {
+      return responce.status(400).json({ message: 'Не передано ни одного файлы' });
     }
-    for (let file_key in req.files) {
-      if (!req.files.hasOwnProperty(file_key)) {
+
+
+    for (let fileKey in request.files) {
+      if (!request.files.hasOwnProperty(fileKey)) {
         continue;
       }
-      let file = req.files[file_key];
+
+      let file = request.files[fileKey];
+
       if (!Array.isArray(file)) {
         file = [file];
       }
+
       file.forEach((file) => {
-        file.mv(__root + '/public/files/' + file.name)
+        let userDocument = UserDocument.build({
+          user_id: request.body.userId,
+          clinic_id: request.body.clinicId,
+          document_type_id: request.body.documentTypeId,
+          fileResource: file
+        });
+
+        userDocument.generateNewFileName().save()
+          .then(() => userDocument.uploadDocument()
+            .then(responce.status(200).json({ message: 'Все файлы успешно загружены' }))
+            .catch((error) => {
+              responce.status(500).json({ message: 'Не удалось загрузить файлы', error: `${error}` });
+              throw error;
+            })
+          )
+          .catch((error) => {
+            responce.status(500).json({ message: 'Не удалось сохранить модель', error: `${error}` });
+            throw error;
+          });
       });
     }
-    res.status(200).json({ message: 'Все файлы успешно загружены' });
+
   } catch (e) {
-    res.status(500).json({ message: 'Ошибка при загрузке файла' });
+    responce.status(500).json({ message: e });
     throw e;
   }
 })
