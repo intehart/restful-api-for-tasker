@@ -11,7 +11,9 @@ const db_config = require(__root + '/config/db-config.json');
 global.db = new Sequelize(db_config[environment]);
 
 //connect file uploader
-app.use(require('express-fileupload')());
+app.use(require('express-fileupload')({
+  createParentPath: true
+}));
 
 app.use(express.json({ extended: true }));
 
