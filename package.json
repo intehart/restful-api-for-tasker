@@ -4,6 +4,7 @@
   "description": "api for task manager-live",
   "main": "index.js",
   "scripts": {
+    "secli": "npx sequelize-cli",
     "start": "node index.js",
     "server": "nodemon index.js",
     "client": "npm run start --prefix client",
