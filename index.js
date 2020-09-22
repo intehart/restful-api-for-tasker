@@ -1,12 +1,16 @@
-const express = require('express');
-const { Sequelize } = require('sequelize');
-const app = express();
-const PORT = 5020;
-
 global.__root = __dirname;
 
-const environment = "development";
+const express = require('express');
+const { Sequelize } = require('sequelize');
 const db_config = require(__root + '/config/db-config.json');
+const session = require('express-session');
+const redis = require('redis');
+const redisStorage = require('connect-redis')(session)
+
+const app = express();
+const environment = "development";
+const PORT = 5020;
+const client = redis.createClient();
 
 global.db = new Sequelize(db_config[environment]);
 
@@ -16,6 +20,17 @@ app.use(require('express-fileupload')({
 }));
 
 app.use(express.json({ extended: true }));
+
+app.use(session({
+  store: new redisStorage({
+    host: '127.0.0.1',
+    port: 6379,
+    client: client
+  }),
+  secret: 'uniquesecretKey',
+  saveUninitialized: true,
+  resave: false
+}));
 
 //connect routes handler map
 require('./routes/routesMapper')(app);
