@@ -9,7 +9,7 @@ const redisStorage = require('connect-redis')(session)
 
 const app = express();
 const environment = "development";
-const PORT = 5020;
+const PORT = 5021;
 const client = redis.createClient();
 
 global.db = new Sequelize(db_config[environment]);
