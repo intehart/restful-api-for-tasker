@@ -8,91 +8,108 @@ const {check, validationResult} = require('express-validator');
 router.post(
   '/register',
   [
-    check('email', 'Некорректный mail').isEmail(),
-    check('password', 'Минимальная длина пароля 12 символов')
-      .isLength({min: 12})
+    check('email', 'Некорректный email').isEmail(),
+    check('password', 'Минимальная длина пароля 6 символов').isLength({min: 6}),
+    check('username', 'Минимальная длина логина 3 символов').isLength({min: 3}),
   ],
   async (req, res) => {
-  try {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        errors: errors.array(),
-        message: 'Некорректные данные при регистрации'
-      })
-    }
+    try {
+      const errors = validationResult(req);
 
-    const {email, password} = req.body;
-    const candidate = await User.findOne({
-      where: {
-        email: email
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          errors: errors.array(),
+          message: 'Некорректные данные при регистрации'
+        });
       }
-    }).then(result => res.status(200).json({
-      message: `${result} okey`
-    }));
 
-    if (candidate) {
-      return res.status(400).json({message: 'Такой пользователь уже зарегистрирован'})
+      const {email, username, password} = req.body;
+
+      const candidate = await User.findOne({
+        where: {
+          email: email
+        }
+      });
+
+      if (candidate) {
+        return res.status(409).json({message: 'Такой пользователь уже зарегистрирован'});
+      }
+
+      const hashPassword = await bcrypt.hash(password, 12);
+
+      const authToken = jwt.sign(
+        { username: username },
+        hashPassword,
+        { expiresIn: '1h' }
+      );
+
+      const user = new User({
+        email: email,
+        username: username,
+        password: hashPassword,
+        auth_token: authToken
+      });
+
+      await user.save()
+        .then(result => res.status(201).json({ message: 'Пользователь создан' }))
+        .catch(result => {
+          res.status(500).json({message: 'Не удалось создать пользователя'});
+          throw result;
+        });
+
+    } catch (e) {
+      console.log(e);
+      throw e;
     }
-
-    const hashPassword = await bcrypt.hash(password, 12);
-    const user = new User({
-      email, password: hashPassword
-    });
-    await user.save();
-
-    res.status(201).json({ message: 'Пользователь создан' })
-  } catch (e) {
-    console.log(e);
-    res.status(500).json({message: 'Что-то пошло не так'})
-  }
-});
+  });
 
 router.post(
-    '/login',
-    [
-        check('email', 'Введите корректные email').normalizeEmail().isEmail(),
-        check('password', 'Введите пароль').exists()
-    ],
-    async (req, res) => {
+  '/login',
+  [
+    check('email', 'Введите корректные email').normalizeEmail().isEmail(),
+    check('password', 'Введите пароль').exists(),
+    check('username', 'Введите имя пользователя').exists(),
+  ],
+  async (req, res) => {
     try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                errors: errors.array(),
-                message: 'Некорректные данные при входе в систему'
-            })
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          errors: errors.array(),
+          message: 'Некорректные данные при входе в систему'
+        })
+      }
+
+      const {email, username, password} = req.body;
+
+      const user = await User.findOne({
+        where: {
+          email: email
         }
+      });
 
-        const {email, password} = req.body;
-        const user = await User.findOne({
-          where: {
-            email: email
-          }
-        }).then(result => res.status(200).json({
-          message: `${result} okey`
-        }));
+      if (!user) {
+        return res.status(404).json({ message: 'Такого пользователя не существует' });
+      }
 
-        if (!user) {
-            return res.status(400).json({ message: 'Нет такого пользователя' });
-        }
+      const hashPassword = user.password;
 
-        const isMatch = await bcrypt.compare(password, user.password);
+      const isMatch = await bcrypt.compare(password, hashPassword);
 
-        if (!isMatch) {
-            return res.status(400).json({ message: 'Не правильно введен пароль' })
-        }
+      if (!isMatch || user.username !== username) {
+        return res.status(400).json({ message: 'Неверно введено имя пользователя или пароль' })
+      }
 
-        const token = jwt.sign(
-            { userId: user.id },
-            'dasoidaiodjwqjoi',
-            { expiresIn: '1h' }
-        )
+      const token = jwt.sign(
+        { username: username },
+        hashPassword,
+        { expiresIn: '1h' }
+      );
 
-        res.json({ token, userId: user.id })
+      res.json({ token, userId: user.id })
     } catch (e) {
-        res.status(500).json({message: 'Что-то пошло не так'});
+      res.status(500).json({message: 'Что-то пошло не так'});
     }
-});
+  });
 
 module.exports = router;
