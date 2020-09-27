@@ -33,7 +33,10 @@ export const AuthPage = () => {
         <section className="auth">
             <h1 className="auth__headline">Авторизация в систему</h1>
             <div>
-                <input
+              <label htmlFor="email">
+                <p>Email</p>
+              </label>
+              <input
                     type="email"
                     id="email"
                     placeholder="Введите email"
@@ -41,19 +44,29 @@ export const AuthPage = () => {
                     className="input"
                     onChange={changeHandler}
                 />
-                <label htmlFor="email">
-                    Email
+                <br/>
+                <label htmlFor="username">
+                  <p>Имя пользователя</p>
+                  <input
+                    type="text"
+                    id="username"
+                    placeholder="Введите имя пользователя"
+                    name="username"
+                    className="input"
+                    onChange={changeHandler}
+                  />
                 </label>
-                <input
+                <br/>
+                <label htmlFor="password">
+                  <p>Пароль</p>
+                  <input
                     type="password"
                     id="password"
                     placeholder="Введите пароль"
                     name="password"
                     className="input"
                     onChange={changeHandler}
-                />
-                <label htmlFor="password">
-                    Пароль
+                  />
                 </label>
             </div>
             <div>
