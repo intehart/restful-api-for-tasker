@@ -3,36 +3,11 @@ const router = Router();
 const User = require('../models/User')(db);
 const UserDocument = require('../models/UserDocument')(db);
 
-router.get('/login', async (req, res) => {
-  try {
-    if (req.session.userId === undefined) {
-      req.session.userId = Math.random();
-    }
-    res.status(200).json({ message: 'ok' });
-  } catch (e) {
-    res.status(500).json({ message: e });
-    throw e;
-  }
-});
-
-router.get('/profile', async (req, res) => {
-  try {
-    res.status(200).json({ message: req.session.userId });
-  } catch (e) {
-    res.status(500).json({ message: e });
-    throw e;
-  }
-});
-
-router.get('/', async (req, res) => {
-  res.sendFile( __root + '/public/image-load.html');
-})
-
 router.get('/get-document/:id', async (req, res) => {
   return res.status(400).json('success');
 })
 
-router.post('/upload-document', async (req, res) => {
+router.post('/send-document', async (req, res) => {
   try {
 
     if (req.files === undefined) {
