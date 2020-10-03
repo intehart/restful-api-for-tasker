@@ -9,7 +9,7 @@ const redisStorage = require('connect-redis')(session)
 
 const app = express();
 const environment = "development";
-const PORT = 5021;
+const PORT = 5020;
 const client = redis.createClient();
 
 global.db = new Sequelize(db_config[environment]);
@@ -29,7 +29,12 @@ app.use(session({
   }),
   secret: 'uniquesecretKey',
   saveUninitialized: true,
-  resave: false
+  resave: true,
+  cookie: {
+    secure: true,
+    maxAge: 3600
+  },
+  unset: 'destroy'
 }));
 
 //connect routes handler map
