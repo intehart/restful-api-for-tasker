@@ -1,4 +1,4 @@
 module.exports = (app) => {
-    app.use('/api/auth', require('./auth.routes'));
-    app.use('/api/user', require('./user.routes'));
+    app.use('/auth', require('./auth.routes'));
+    app.use('/user', require('./user.routes'));
 }
