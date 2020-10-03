@@ -51,12 +51,14 @@ router.post(
       });
 
       await user.save()
-        .then(result => res.status(201).json({ message: 'Пользователь создан' }))
+        .then(result => {
+          res.status(201).json({message: 'Пользователь создан'});
+          req.session.sessionID = authToken;
+        })
         .catch(result => {
           res.status(500).json({message: 'Не удалось создать пользователя'});
           throw result;
         });
-
     } catch (e) {
       console.log(e);
       throw e;
@@ -105,11 +107,21 @@ router.post(
         hashPassword,
         { expiresIn: '1h' }
       );
-
-      res.json({ token, userId: user.id })
+      req.session.sessionID = token;
+      res.status(200).json({ token , userId: user.id });
     } catch (e) {
       res.status(500).json({message: 'Что-то пошло не так'});
     }
   });
+
+router.get('/logout', async (req, res) => {
+  try {
+    res.status(200).json({message: req.session.sessionID});
+    req.session.destroy();
+  } catch (e) {
+    res.status(200).json({message: e});
+    throw e;
+  }
+});
 
 module.exports = router;
